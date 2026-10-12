@@ -208,17 +208,28 @@ export class OrderLifecycleService {
 
         order = result.data;
         orderErr = result.error;
-
-        if (!orderErr || orderErr.code !== '23505') break;
-        logger.warn(`[Orders] display ID collision on ${orderDisplayId}, retrying (attempt ${attempt + 1}/${MAX_ID_RETRIES})`);
+                
       }
 
       if (orderErr) {
         logger.error('Order Insertion Error:', orderErr.message);
-        throw new DomainError(500, { error: 'Failed to create order record.', details: orderErr.message });
+        throw new DomainError(500, {
+          error: 'Failed to create order record.',
+          details: orderErr.message
+        });
       }
 
-      const { error: timelineErr } = await this.orderTimelineService.generateDefaultTimeline(orderDisplayId);
+      if (!order) {
+        throw new DomainError(500, {
+          error: 'Failed to create order record.'
+        });
+      }
+
+      const { error: timelineErr } =
+        await this.orderTimelineService.generateDefaultTimeline(orderDisplayId);
+
+    
+    
 
       if (timelineErr) {
         logger.error('Timeline Insertion Error:', timelineErr.message);
