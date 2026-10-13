@@ -240,7 +240,7 @@ async function scanAll({ github, context, core }) {
 }
 
 
-export {
+module.exports = {
   isNonContributor,
   containsLinks,
   removeLinks,
