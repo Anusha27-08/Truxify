@@ -239,10 +239,11 @@ async function scanAll({ github, context, core }) {
   core.info(`Scan complete! Updated ${updatedIssueCount} issue/PR descriptions and ${updatedCommentCount} comments.`);
 }
 
-exports = {
+module.exports = {
   isNonContributor,
   containsLinks,
   removeLinks,
   run,
   scanAll
 };
+
